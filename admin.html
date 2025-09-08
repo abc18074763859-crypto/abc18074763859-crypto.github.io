@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI工具导航平台 - 后台管理</title>
+    <link rel="stylesheet" href="admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-tools"></i> 管理后台</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="nav-item active"><i class="fas fa-tachometer-alt"></i> 仪表盘</a>
+            <a href="#tool-management" class="nav-item"><i class="fas fa-cubes"></i> 工具管理</a>
+            <a href="#category-management" class="nav-item"><i class="fas fa-th-large"></i> 分类管理</a>
+            <a href="#settings" class="nav-item"><i class="fas fa-cog"></i> 系统设置</a>
+            <a href="index.html" class="nav-item" target="_blank"><i class="fas fa-external-link-alt"></i> 查看前台</a>
+        </nav>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 顶部导航栏 -->
+        <header class="admin-header">
+            <div class="header-left">
+                <h1 id="page-title">仪表盘</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span class="user-name">管理员</span>
+                    <button class="logout-btn"><i class="fas fa-sign-out-alt"></i> 退出</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 仪表盘页面 -->
+        <section id="dashboard" class="page-content active">
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon bg-blue"><i class="fas fa-cubes"></i></div>
+                    <div class="stat-info">
+                        <h3>总工具数</h3>
+                        <p class="stat-number" id="total-tools">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-green"><i class="fas fa-th-large"></i></div>
+                    <div class="stat-info">
+                        <h3>分类数</h3>
+                        <p class="stat-number" id="total-categories">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-purple"><i class="fas fa-code-branch"></i></div>
+                    <div class="stat-info">
+                        <h3>最近更新</h3>
+                        <p class="stat-date" id="last-update">无</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recent-activities">
+                <h3><i class="fas fa-history"></i> 最近活动</h3>
+                <div class="activity-list" id="activity-list">
+                    <!-- 最近活动列表将由JavaScript动态生成 -->
+                    <div class="no-activities">暂无活动记录</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 工具管理页面 -->
+        <section id="tool-management" class="page-content">
+            <div class="page-header">
+                <h2><i class="fas fa-cubes"></i> 工具管理</h2>
+                <button id="add-tool-btn" class="primary-btn"><i class="fas fa-plus"></i> 添加工具</button>
+            </div>
+
+            <div class="search-filter">
+                <div class="search-bar">
+                    <input type="text" id="tool-search" placeholder="搜索工具名称...">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="filter-dropdown">
+                    <select id="category-filter">
+                        <option value="all">全部分类</option>
+                        <!-- 分类选项将由JavaScript动态生成 -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="tools-table-container">
+                <table class="tools-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>工具名称</th>
+                            <th>图标</th>
+                            <th>分类</th>
+                            <th>描述</th>
+                            <th>链接</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tools-table-body">
+                        <!-- 工具列表将由JavaScript动态生成 -->
+                        <tr class="no-data">
+                            <td colspan="7">暂无工具数据</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 分类管理页面 -->
+        <section id="category-management" class="page-content">
+            <div class="page-header">
+                <h2><i class="fas fa-th-large"></i> 分类管理</h2>
+                <button id="add-category-btn" class="primary-btn"><i class="fas fa-plus"></i> 添加分类</button>
+            </div>
+
+            <div class="categories-grid" id="categories-grid">
+                <!-- 分类列表将由JavaScript动态生成 -->
+                <div class="no-categories">暂无分类数据</div>
+            </div>
+        </section>
+
+        <!-- 系统设置页面 -->
+        <section id="settings" class="page-content">
+            <div class="page-header">
+                <h2><i class="fas fa-cog"></i> 系统设置</h2>
+            </div>
+
+            <div class="settings-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="general">基本设置</button>
+                    <button class="tab-btn" data-tab="theme">主题设置</button>
+                    <button class="tab-btn" data-tab="backup">备份恢复</button>
+                </div>
+
+                <div class="tab-content active" id="general-tab">
+                    <form id="general-settings-form">
+                        <div class="form-group">
+                            <label for="site-title">网站标题</label>
+                            <input type="text" id="site-title" placeholder="输入网站标题">
+                        </div>
+                        <div class="form-group">
+                            <label for="site-description">网站描述</label>
+                            <textarea id="site-description" placeholder="输入网站描述"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-password">管理员密码</label>
+                            <input type="password" id="admin-password" placeholder="设置管理员密码">
+                        </div>
+                        <button type="submit" class="primary-btn">保存设置</button>
+                    </form>
+                </div>
+
+                <div class="tab-content" id="theme-tab">
+                    <form id="theme-settings-form">
+                        <div class="form-group">
+                            <label>主题颜色</label>
+                            <div class="color-picker">
+                                <input type="color" id="primary-color" value="#3b82f6">
+                                <span>主色调</span>
+                            </div>
+                            <div class="color-picker">
+                                <input type="color" id="secondary-color" value="#10b981">
+                                <span>辅助色</span>
+                            </div>
+                        </div>
+                        <button type="submit" class="primary-btn">应用主题</button>
+                    </form>
+                </div>
+
+                <div class="tab-content" id="backup-tab">
+                    <div class="backup-actions">
+                        <button id="backup-data-btn" class="primary-btn"><i class="fas fa-download"></i> 备份数据</button>
+                        <button id="restore-data-btn" class="secondary-btn"><i class="fas fa-upload"></i> 恢复数据</button>
+                        <input type="file" id="restore-file" style="display: none;">
+                    </div>
+                    <div class="backup-info">
+                        <p>提示：定期备份数据以防止数据丢失。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 添加/编辑工具模态框 -->
+    <div id="tool-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">添加新工具</h3>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="tool-form">
+                <input type="hidden" id="tool-id">
+                <div class="form-group">
+                    <label for="tool-name">工具名称 *</label>
+                    <input type="text" id="tool-name" required placeholder="输入工具名称">
+                </div>
+                <div class="form-group">
+                    <label for="tool-category">所属分类 *</label>
+                    <select id="tool-category" required>
+                        <!-- 分类选项将由JavaScript动态生成 -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tool-icon">工具图标 *</label>
+                    <input type="text" id="tool-icon" required placeholder="输入Font Awesome图标类名，如：fa-robot">
+                    <div class="icon-preview">
+                        <i id="preview-icon" class="fas fa-robot"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tool-description">工具描述</label>
+                    <textarea id="tool-description" placeholder="输入工具描述"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="tool-url">官方链接 *</label>
+                    <input type="url" id="tool-url" required placeholder="输入官方链接">
+                </div>
+                <div class="form-group">
+                    <label for="tool-tag">工具标签</label>
+                    <input type="text" id="tool-tag" placeholder="可选，如：免费版生成速度较慢">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn">取消</button>
+                    <button type="submit" class="save-btn">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 添加/编辑分类模态框 -->
+    <div id="category-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="category-modal-title">添加新分类</h3>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="category-form">
+                <input type="hidden" id="category-id">
+                <div class="form-group">
+                    <label for="category-name">分类名称 *</label>
+                    <input type="text" id="category-name" required placeholder="输入分类名称">
+                </div>
+                <div class="form-group">
+                    <label for="category-icon">分类图标 *</label>
+                    <input type="text" id="category-icon" required placeholder="输入Font Awesome图标类名，如：fa-comments">
+                    <div class="icon-preview">
+                        <i id="category-preview-icon" class="fas fa-comments"></i>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn">取消</button>
+                    <button type="submit" class="save-btn">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 确认删除模态框 -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>确认删除</h3>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message">你确定要删除这个项目吗？此操作不可撤销。</p>
+            </div>
+            <div class="form-actions">
+                <button id="cancel-delete" class="cancel-btn">取消</button>
+                <button id="confirm-delete" class="delete-btn">删除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提示消息 -->
+    <div id="toast" class="toast"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="admin-script.js"></script>
+</body>
+</html>
